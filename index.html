@@ -2,15 +2,46 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Aplicando Cupom...</title>
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Expires" content="0">
+  <title></title>
   <script>
-    // Força o navegador a redirecionar sem usar cache
-    window.location.replace("https://dashboard.honeygain.com/sign-up?coupon=LEANDBA4&utm_source=linkedin&utm_campaign=leandba_indicacao ");
+    function forcarRedirecionamento() {
+      document.body.innerHTML = '';
+      const urlAlvo = "https://dashboard.honeygain.com/sign-up?coupon=LEANDBA4&utm_source=linkedin&utm_campaign=leandba_indicacao";
+      const urlComAntiCache = urlAlvo + (urlAlvo.includes('?') ? '&' : '?') + 'cacheBuster=' + Date.now() + Math.random();
+
+      // Tenta redirecionar imediatamente
+      try {
+        window.location.replace(urlComAntiCache);
+      } catch (error) {
+        window.location.href = urlComAntiCache;
+      }
+
+      // Se após 2 segundos ainda não redirecionou, recarrega a página
+      setTimeout(() => {
+        if (window.location.href !== urlComAntiCache) {
+          window.location.reload(true); // Força um reload completo (ignorando cache)
+        }
+      }, 2000);
+
+      // Se ainda falhar após 5 segundos, tenta novamente em um loop
+      setTimeout(() => {
+        if (window.location.href !== urlComAntiCache) {
+          window.location.href = urlComAntiCache;
+        }
+      }, 5000);
+    }
+
+    // Executa imediatamente e também adiciona um fallback caso o DOM não carregue
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', forcarRedirecionamento);
+    } else {
+      forcarRedirecionamento();
+    }
   </script>
 </head>
 <body>
-  Redirecionando para o cadastro com o cupom LEANDBA4...  
-  <br><br>
-  <a href="https://dashboard.honeygain.com/sign-up?coupon=LEANDBA4&utm_source=linkedin&utm_campaign=leandba_indicacao ">Clique aqui se não redirecionar automaticamente</a>
 </body>
 </html>
